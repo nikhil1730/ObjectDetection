@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   detectedObjects: any = [];
   classifications: any = [];
   insidePeople: number = 0;
+  foundPerson: boolean = false;
+  waitTime: number = 0;
 
   constructor(
     private elem: ElementRef
@@ -55,40 +57,46 @@ export class AppComponent implements OnInit {
   }
 
   renderPredictions = predictions => {
-    const ctx = this.elem.nativeElement.querySelector('#myCanvas').getContext('2d');
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    // Font options.
-    const font = '16px sans-serif';
-    ctx.font = font;
-    ctx.textBaseline = 'top';
-    predictions.forEach(prediction => {
-      console.log(prediction);
-      if(prediction.class == 'person') {
-        this.insidePeople += 1;
-      } else {
-        console.log("Other object");
-      }
-      const x = prediction.bbox[0];
-      const y = prediction.bbox[1];
-      const width = prediction.bbox[2];
-      const height = prediction.bbox[3];
-      // Draw the bounding box.
-      ctx.strokeStyle = '#00FFFF';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(x, y, width, height);
-      // Draw the label background.
-      ctx.fillStyle = '#00FFFF';
-      const textWidth = ctx.measureText(prediction.class).width;
-      const textHeight = parseInt(font, 10); // base 10
-      ctx.fillRect(x, y, textWidth + 4, textHeight + 4);
-    });
-
-    predictions.forEach(prediction => {
-      const x = prediction.bbox[0];
-      const y = prediction.bbox[1];
-      // Draw the text last to ensure it's on top.
-      ctx.fillStyle = '#000000';
-      ctx.fillText(prediction.class, x, y);
-    });
+    if(predictions.length == 0 && this.foundPerson) {
+      this.insidePeople += 1;
+      this.foundPerson = false;
+    }  else {
+      const ctx = this.elem.nativeElement.querySelector('#myCanvas').getContext('2d');
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      // Font options.
+      const font = '16px sans-serif';
+      ctx.font = font;
+      ctx.textBaseline = 'top';
+      predictions.forEach(prediction => {
+        console.log(prediction);
+        if(prediction.class == 'person') {
+          this.foundPerson = true;
+        } else {
+          console.log("Other object");
+        }
+        const x = prediction.bbox[0];
+        const y = prediction.bbox[1];
+        const width = prediction.bbox[2];
+        const height = prediction.bbox[3];
+        // Draw the bounding box.
+        ctx.strokeStyle = '#00FFFF';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(x, y, width, height);
+        // Draw the label background.
+        ctx.fillStyle = '#00FFFF';
+        const textWidth = ctx.measureText(prediction.class).width;
+        const textHeight = parseInt(font, 10); // base 10
+        ctx.fillRect(x, y, textWidth + 4, textHeight + 4);
+      });
+  
+      predictions.forEach(prediction => {
+        const x = prediction.bbox[0];
+        const y = prediction.bbox[1];
+        // Draw the text last to ensure it's on top.
+        ctx.fillStyle = '#000000';
+        ctx.fillText(prediction.class, x, y);
+      });
+    }
+    
   }
 }

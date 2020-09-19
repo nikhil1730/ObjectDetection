@@ -1,16 +1,23 @@
-<div class="centerContainer">
-  <div>
+<div style="padding:20px" class="centerContainer">
     <div class="row">
-      <h1>Object Detection</h1>
+      <div class="form-group col-sm-6">
+        <label for="waitTime">Please Enter the Average wait time</label>
+        <input type="text" class="form-control" id="waitTime" name="waitTime" [(ngModel)]="waitTime" placeholder="Wait Time">
+      </div>
+      <div class="col-sm-6">
+      <h1>People Inside the store => {{insidePeople}}</h1>
+      <h1>Average waitTime for the store is => {{insidePeople*waitTime}} Mins</h1>
+    </div>
+      </div>
+<div class="row">
       <div class="col-sm-6">
         <mat-card class="videoCard mat-elevation-z9">
           <video id="myVideo" poster="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg"></video>
           <canvas id="myCanvas"></canvas>
         </mat-card>
       </div>
-      <div class="col-sm-6">
-        <h1>People Inside the store => {{insidePeople}}</h1>
-      </div>
+    </div>
+      
 <!--      <div class="col-sm-4">-->
 <!--        <mat-card class="objectCard">-->
 <!--          <h5>Object Detected:</h5>-->
@@ -30,6 +37,4 @@
 <!--          </div>-->
 <!--        </mat-card>-->
 <!--      </div>-->
-</div>
-  </div>
 </div>
