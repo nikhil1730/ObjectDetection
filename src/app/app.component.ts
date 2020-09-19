@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   vdo;
   detectedObjects: any = [];
   classifications: any = [];
+  insidePeople: number = 0;
 
   constructor(
     private elem: ElementRef
@@ -62,6 +63,11 @@ export class AppComponent implements OnInit {
     ctx.textBaseline = 'top';
     predictions.forEach(prediction => {
       console.log(prediction);
+      if(prediction.class == 'person') {
+        this.insidePeople += 1;
+      } else {
+        console.log("Other object");
+      }
       const x = prediction.bbox[0];
       const y = prediction.bbox[1];
       const width = prediction.bbox[2];

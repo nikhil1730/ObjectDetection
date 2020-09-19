@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "image-classification"
+  "defaultProject": "image-classification",
+  "cli": {
+    "analytics": false
+  }
 }
